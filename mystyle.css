@@ -1,0 +1,131 @@
+body {
+  background-color: rgb(19, 67, 88);
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+:root {
+  --progress-animation-time: 1500ms;
+  --squish-animation-time: 700ms;
+  --circle-animation-time: 700ms;
+  --pointer-animation-time: 400ms;
+  --btn-height: 50px;
+  --btn-width: 200px;
+}
+
+.btn {
+  position: relative;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  width: var(--btn-width);
+  height: var(--btn-height);
+  padding: 0;
+  background-color: #149288;
+  font-size: medium;
+}
+
+.btn.animate {
+  background-color: transparent;
+  color: transparent;
+  user-select: none;
+  cursor: default;
+  animation: hide 0ms calc(var(--squish-animation-time) + var(--progress-animation-time)) forwards;
+}
+
+.btn::before {
+  content: "sc";
+  display: none;
+  position: absolute;
+  background-color: #2B2D2F;
+  inset: 0;
+  border-radius: 10px;
+  animation: squish var(--squish-animation-time) cubic-bezier(0.12, 0.25, 0.30, 1);
+  animation-fill-mode: forwards;
+}
+
+
+.btn::after {
+  content: "sc";
+  display: none;
+  position: absolute;
+  background-color: #AAA;
+  left: 50%;
+  right: 50%;
+  top: 47%;
+  bottom: 47%;
+  border-radius: 40px;
+  animation: progress var(--progress-animation-time) var(--squish-animation-time);
+}
+
+.btn.animate::before,
+.btn.animate::after {
+  display: block;
+}
+
+.btn.animate + .pointer-container {
+  background-color: #cbe5ff;
+  width: 0;
+  height: 0;
+  animation: circle var(--circle-animation-time) calc(var(--squish-animation-time) + var(--progress-animation-time)) forwards cubic-bezier(0.26, 0.6, 0.46, 1.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn.animate + .pointer-container .pointer-svg {
+  stroke: white;
+  width: 20px;
+  stroke-dashoffset: 45;
+  stroke-dasharray: 45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4px;
+  animation: pointer var(--circle-animation-time) calc(var(--squish-animation-time) + var(--progress-animation-time) + var(--circle-animation-time)) forwards;
+}
+
+@keyframes progress {
+  100% {
+    left: -15%;
+    right: -15%;
+  }
+}
+
+@keyframes squish {
+  100% {
+    left: -20%;
+    right: -20%;
+    top: 40%;
+    bottom: 40%;
+    border-radius: 15px;
+  }
+}
+
+@keyframes hide {
+  100% {
+    width: 0;
+    height: 0;
+  }
+}
+
+@keyframes circle {
+  0% {
+    width: calc(var(--btn-width) * 1.25);
+    height: calc(var(--btn-height) * .1);
+  }
+  100% {
+    background-color: #71DFBE;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+  }
+}
+
+@keyframes pointer {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
